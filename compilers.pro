@@ -14,9 +14,9 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    toxet.cpp
+    scanner.cpp
 
 HEADERS  += mainwindow.h \
-    toxet.h
+    scanner.h
 
 FORMS    += mainwindow.ui
