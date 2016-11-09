@@ -13,8 +13,10 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    toxet.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    toxet.h
 
 FORMS    += mainwindow.ui
