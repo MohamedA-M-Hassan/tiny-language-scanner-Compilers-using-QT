@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 
+// local include
+#include "scanner.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -22,6 +25,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    Scanner scann;
 };
 
 #endif // MAINWINDOW_H

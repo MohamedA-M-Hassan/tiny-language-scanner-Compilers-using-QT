@@ -19,6 +19,7 @@ void MainWindow::on_pushButton_clicked()
 {
 
     QString text = ui->textEdit->toPlainText();
+    //text=scann.separateTextToLines(text);
     ui->textBrowser->setText(text);
 
 }
