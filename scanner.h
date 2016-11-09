@@ -6,14 +6,18 @@
 //#include <algorithm>
 #include <string>
 #include <locale>
+#include <iterator>
 class Scanner
 {
 public:
     Scanner();
-    QString separateTextToLines(QString wholeText);
+    void separateTextToLines(QString wholeText);
+    void comparing (QString containerOfChar[]);
 private:
     QMap <QString,QString> table;
+    QMap <QString,QString> printedTable;
     enum state{start,inComment,inID,inNum,inAssign,done};
+
 };
 
 #endif // SCANNER_R

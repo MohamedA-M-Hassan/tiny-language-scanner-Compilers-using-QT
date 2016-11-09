@@ -57,6 +57,7 @@ void Scanner::separateTextToLines (QString wholeText)
              case done:
                     container[count]=myCharContainer;
                     count ++;
+                    s=start;
               break;
              }
          }
