@@ -3,6 +3,9 @@
 #include "scanner.h"
 #include <QString>
 #include <QMap>
+
+#include <locale>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -37,19 +40,24 @@ void MainWindow::on_pushButton_clicked()
 
     enum state{start,inComment,inID,inNum,inAssign,done,identifier};
     state s=start;
+  //  locale() loc;
 
     QString myCharContainer="";
     QVector <QString>container;
 
     for (int i = 0 ;i < (text.size()+1);i++){
         QChar ch = text[i];
-        switch (s) {
+      label:  switch (s) {
           case start:
                  myCharContainer="";
                  if (text[i]=='{')
                  {
                     myCharContainer=myCharContainer+text[i];
                     s=inComment;
+                 }
+                 else if (text[i]==':') {
+                    myCharContainer=myCharContainer+text[i];
+                    s=inAssign;
                  }
                      //if (text[i]==':')
                      //{ myCharContainer = myCharContainer+(text[i]); s=inAssign; }
@@ -65,12 +73,18 @@ void MainWindow::on_pushButton_clicked()
                  break;
 
 
+           case inAssign:
+                   if (text[i]=='=')
+                   { myCharContainer= myCharContainer+(text[i]);}
+                    s=done;
+                    goto label;
+                   break;
            case inComment:
-                while (text[i] !='}')
-                { i++;}
-                s=start;
-                break;
-           /*case inID:
+                    while (text[i] !='}')
+                        { i++;}
+                    s=start;
+                    break;
+    /*       case inID:
              while (isalnum(text[i],loc))
              {
                  myCharContainer=myCharContainer+text[i];
@@ -78,14 +92,12 @@ void MainWindow::on_pushButton_clicked()
              }
              break;
                  case inNum:break;
-          case inAssign:
-                 if (text[i]=='=') { myCharContainer= myCharContainer+(text[i]);}
-                  s=done;
-                 break;
+*/
           case done:
                  container.push_back(myCharContainer);
                  s=start;
-           break;*/
+                 goto label;
+           break;
           }
       }
 
