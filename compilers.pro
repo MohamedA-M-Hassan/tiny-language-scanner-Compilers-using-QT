@@ -14,9 +14,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    scanner.cpp
+    scanner.cpp \
+    trial.cpp
 
 HEADERS  += mainwindow.h \
-    scanner.h
+    scanner.h \
+    trial.h
 
 FORMS    += mainwindow.ui

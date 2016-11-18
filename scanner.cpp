@@ -1,22 +1,31 @@
 #include "scanner.h"
 using namespace std;
 Scanner::Scanner()
+{}
+// set t
+/*void Scanner::sett(QMap <QString,QString> t)
 {
+    t["if"]="reserve word";
+    t["then"]="reserved word";
+    t["end"]="reserved word";
+    t["until"]="reserved word";
+    t["write"]="reserved word";
+    t["else"]="reserved word";
+    t["repeat"]="reserved word";
+    t["read"]="reserved word";
+    t["+"]="plus";
+    t["-"]="minus";
+    t["*"]="multiple";
+    t["/"]="divide";
+    t[";"]="SEMI";
+    t[":="]="ASSIGN";
+    table =t;
 
-    table["if"]="reserve word";
-    table["then"]="reserved word";
-    table["end"]="reserved word";
-    table["until"]="reserved word";
-    table["write"]="reserved word";
-    table["else"]="reserved word";
-    table["repeat"]="reserved word";
-    table["read"]="reserved word";
-    table["+"]="plus";
-    table["-"]="minus";
-    table["*"]="multiple";
-    table["/"]="divide";
-    table[";"]="SEMI";
-    table[":="]="ASSIGN";
+}*/
+// RETURN t
+QMap<QString,QString> Scanner::getTable()
+{
+    return table;
 }
 
 void Scanner::separateTextToLines (QString wholeText)
@@ -24,12 +33,14 @@ void Scanner::separateTextToLines (QString wholeText)
     state s=start;
     locale loc;
     QString myCharContainer="";
-    QString container[100];
-    int count = 0; // counter for containr index
+
+    QVector <QString>container;
+  //  int count = 0; // counter for containr index
 
        for (int i = 0 ;i < wholeText.size();i++){
           switch (s) {
              case start:
+                        myCharContainer="";
                         if (wholeText[i]==':')
                         { myCharContainer = myCharContainer+(wholeText[i]); s=inAssign; }
                         else if (wholeText[i]=='{')
@@ -49,26 +60,39 @@ void Scanner::separateTextToLines (QString wholeText)
                    { i++;}
                    s=start;
                    break;
-                    case inID:break;
+              case inID:
+                while (isalnum(wholeText[i],loc))
+                {
+                    myCharContainer=myCharContainer+wholeText[i];
+                    i++;
+                }
+                break;
                     case inNum:break;
              case inAssign:
-                    if (wholeText[i]=='=') { myCharContainer= myCharContainer+(wholeText[i]); s=done;}
+                    if (wholeText[i]=='=') { myCharContainer= myCharContainer+(wholeText[i]);}
+                     s=done;
                     break;
              case done:
-                    container[count]=myCharContainer;
-                    count ++;
+                    container.push_back(myCharContainer);
+                    s=start;
               break;
              }
          }
-    }
-void Scanner::comparing(QString containerOfChar[100])
+       comparing(container);
+}
+void Scanner::comparing(QVector<QString>container)
 {
-    for (int i = 0; i < 100; i++) {
-       for (QMap<QString,QString>::iterator it=table.begin();it != table.end();it++)
+    for (QVector<QString>::iterator i = container.begin(); i !=container.end(); i++) {
+       for (QMap<QString,QString>::iterator it=getTable().begin();it != getTable().end();it++)
        {
-           if (containerOfChar[i]==it.key())
+           if (i==it.key())
                printedTable[it.key()]=it.value();
+           else printedTable[it.key()]="identigier";
        }
     }
 
+}
+QMap<QString,QString> Scanner::returnPrintedTable()
+{
+    return printedTable;
 }
