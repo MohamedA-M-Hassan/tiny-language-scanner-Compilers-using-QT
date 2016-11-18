@@ -26,7 +26,7 @@ void MainWindow::on_pushButton_clicked()
     using namespace std;
     QString text = ui->textEdit->toPlainText(); // read the input
     QMap<QString,QString> token;
-    token["if"]     ="reserve word";
+    token["if"]     ="reserved word";
     token["then"]   ="reserved word";
     token["end"]    ="reserved word";
     token["until"]  ="reserved word";
@@ -34,21 +34,19 @@ void MainWindow::on_pushButton_clicked()
     token["else"]   ="reserved word";
     token["repeat"] ="reserved word";
     token["read"]   ="reserved word";
-    token["+"]      ="plus";
-    token["-"]      ="minus";
-    token["*"]      ="multiple";
-    token["/"]      ="divide";
-    token[";"]      ="SEMI";
+    //token["+"]      ="plus";
+    //token["-"]      ="minus";
+    //token["*"]      ="multiple";
+    //token["/"]      ="divide";
+    //token[";"]      ="SEMI";
     token[":="]     ="ASSIGN";
 
-    enum state{start,inComment,inID,inNum,inAssign,done,identifier};
+    enum state{start,inComment,inID,inNum,inAssign,done};
     state s=start;
 
-
     QString myCharContainer="";
-    //double numberContainer=NULL;
     QVector <QString>container;
-
+    QMap <QString,QString>outputToken;
     for (int i = 0 ;i < (text.size()+1);i++){
         QChar ch = text[i];
         label:  switch (s) {   // the label to not waste the current char
@@ -66,17 +64,33 @@ void MainWindow::on_pushButton_clicked()
                     myCharContainer=myCharContainer+text[i];
                     s=inAssign;
                  }
-                 //else if (isalpha(text[i],loc))
-                       //  s=inID;
+                 // alphapitic
+                 else if (text[i].isLetter())
+                 {
+                     myCharContainer=myCharContainer+text[i];
+                     s=inID;
+                 }
                  //  numbers
                  else if (text[i].isDigit())
                  {
                     myCharContainer=myCharContainer+text[i];
                     s=inNum;
                  }
-                     //else if (text[i]== "\n" || text[i]=="\t" || text[i]==' ')
-                       //  s=start;
-                     //else s= done;
+                 else if (text[i]=='+') {
+                    outputToken["+"]="PLUS";
+                 }
+                 else if (text[i]=='-') {
+                    outputToken["-"]="MINUS";
+                 }
+                 else if (text[i]=='/') {
+                    outputToken["/"]="DIVIDE";
+                 }
+                 else if (text[i]=='*') {
+                    outputToken["*"]="MULTIPLE";
+                 }
+                 else if (text[i]==';') {
+                    outputToken[";"]="SEMI";
+                 }
                  break;
 
 
@@ -98,18 +112,21 @@ void MainWindow::on_pushButton_clicked()
                         i++;
                     }
                     i--;
-                    s=done;
+                    outputToken[myCharContainer]="Number";
+                    s=start;
+                    //goto label;
+                     break;
+           case inID:
+                     while (text[i].isLetter()||text[i].isDigit())
+                     {
+                         myCharContainer=myCharContainer+text[i];
+                         i++;
+                     }
+                     i--;
+                     s=done;
                     goto label;
-            break; // will never  be achieved
-    /*       case inID:
-             while (isalnum(text[i],loc))
-             {
-                 myCharContainer=myCharContainer+text[i];
-                 i++;
-             }
-             break;
-                 case inNum:break;
-*/
+            break;
+
           case done:
                  container.push_back(myCharContainer);
                  s=start;
@@ -117,17 +134,17 @@ void MainWindow::on_pushButton_clicked()
           }
       }
 
-    /* Scanner scanner;
-    scanner.separateTextToLines(text);
-    QMap<QString,QString>toPrint = scanner.returnPrintedTable();
-
-    QMap<QString, QString>::iterator i;
-    for (i = toPrint.begin(); i != toPrint.end(); i++)
-    {
-        ui->textBrowser->setText(i.value()+i.key()) ;
-    }
-    //ui->textBrowser->setText(text);
-    */
+        // to get the Reserved word and the Identefier
+      for(QVector<QString>::iterator vec = container.begin(); vec != container.end(); vec++) {
+          for (QMap<QString,QString>::iterator mp=token.begin();mp!=token.end(); mp++) {
+              if (vec ==mp.key() )
+              {
+                  outputToken[mp.key()]=mp.value();
+                  break;
+              }
+              else outputToken[*vec]="IDENTEFIER";
+           }
+      }
 
 }
 
