@@ -3,8 +3,10 @@
 #include "scanner.h"
 #include <QString>
 #include <QMap>
-
-#include <locale>
+// copy paste to check if num or n
+#include <locale>         // std::locale, std::isdigit
+#include <sstream>        // std::QStringstream
+using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -21,52 +23,57 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
+    using namespace std;
     QString text = ui->textEdit->toPlainText(); // read the input
     QMap<QString,QString> token;
-    token["if"]="reserve word";
-    token["then"]="reserved word";
-    token["end"]="reserved word";
-    token["until"]="reserved word";
-    token["write"]="reserved word";
-    token["else"]="reserved word";
-    token["repeat"]="reserved word";
-    token["read"]="reserved word";
-    token["+"]="plus";
-    token["-"]="minus";
-    token["*"]="multiple";
-    token["/"]="divide";
-    token[";"]="SEMI";
-    token[":="]="ASSIGN";
+    token["if"]     ="reserve word";
+    token["then"]   ="reserved word";
+    token["end"]    ="reserved word";
+    token["until"]  ="reserved word";
+    token["write"]  ="reserved word";
+    token["else"]   ="reserved word";
+    token["repeat"] ="reserved word";
+    token["read"]   ="reserved word";
+    token["+"]      ="plus";
+    token["-"]      ="minus";
+    token["*"]      ="multiple";
+    token["/"]      ="divide";
+    token[";"]      ="SEMI";
+    token[":="]     ="ASSIGN";
 
     enum state{start,inComment,inID,inNum,inAssign,done,identifier};
     state s=start;
-  //  locale() loc;
+
 
     QString myCharContainer="";
+    //double numberContainer=NULL;
     QVector <QString>container;
 
     for (int i = 0 ;i < (text.size()+1);i++){
         QChar ch = text[i];
-      label:  switch (s) {
+        label:  switch (s) {   // the label to not waste the current char
+                               // or u can use (i--) instead of (goto)
           case start:
                  myCharContainer="";
+                 // comment
                  if (text[i]=='{')
                  {
-                    myCharContainer=myCharContainer+text[i];
+                    //myCharContainer=myCharContainer+text[i];
                     s=inComment;
                  }
+                 // assign
                  else if (text[i]==':') {
                     myCharContainer=myCharContainer+text[i];
                     s=inAssign;
                  }
-                     //if (text[i]==':')
-                     //{ myCharContainer = myCharContainer+(text[i]); s=inAssign; }
-                     //else if (text[i]=='{')
-                       //  s=inComment;
-                     //else if (isalpha(text[i],loc))
+                 //else if (isalpha(text[i],loc))
                        //  s=inID;
-                     //else if (isdigit(text[i],loc))
-                       //  s=inNum;
+                 //  numbers
+                 else if (text[i].isDigit())
+                 {
+                    myCharContainer=myCharContainer+text[i];
+                    s=inNum;
+                 }
                      //else if (text[i]== "\n" || text[i]=="\t" || text[i]==' ')
                        //  s=start;
                      //else s= done;
@@ -77,13 +84,23 @@ void MainWindow::on_pushButton_clicked()
                    if (text[i]=='=')
                    { myCharContainer= myCharContainer+(text[i]);}
                     s=done;
-                    goto label;
+                    goto label;      // or u can use (i--) instead of (goto)
                    break;
            case inComment:
                     while (text[i] !='}')
                         { i++;}
                     s=start;
                     break;
+           case inNum:
+                    while (text[i].isDigit() || text[i]== '.')
+                    {
+                        myCharContainer=myCharContainer+text[i];
+                        i++;
+                    }
+                    i--;
+                    s=done;
+                    goto label;
+            break; // will never  be achieved
     /*       case inID:
              while (isalnum(text[i],loc))
              {
@@ -96,7 +113,6 @@ void MainWindow::on_pushButton_clicked()
           case done:
                  container.push_back(myCharContainer);
                  s=start;
-                 goto label;
            break;
           }
       }
@@ -118,4 +134,21 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_textEdit_destroyed()
 {
  //   trial = "hi";
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+
+    std::locale loc;
+      QString str="17k76ad2";
+      for (int i = 0; i < str.size(); ++i)
+      {
+        /* code */
+        if (str[i].isDigit())
+        {
+             ui->textBrowser->setText("tmam");
+        }
+        else ui->textBrowser->setText("msh tmam");
+      }
+
 }

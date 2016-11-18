@@ -23,6 +23,8 @@ private slots:
 
     void on_textEdit_destroyed();
 
+    void on_pushButton_2_clicked();
+
 private:
     Ui::MainWindow *ui;
     Scanner scann;
