@@ -26,20 +26,20 @@ void MainWindow::on_pushButton_clicked()
     using namespace std;
     QString text = ui->textEdit->toPlainText(); // read the input
     QMap<QString,QString> token;
-    token["if"]     ="reserved word";
-    token["then"]   ="reserved word";
-    token["end"]    ="reserved word";
-    token["until"]  ="reserved word";
-    token["write"]  ="reserved word";
-    token["else"]   ="reserved word";
-    token["repeat"] ="reserved word";
-    token["read"]   ="reserved word";
+    token["if"]     ="IF token";
+    token["then"]   ="THEN token";
+    token["end"]    ="END token";
+    token["until"]  ="UNTIL token";
+    token["write"]  ="WRITE token";
+    token["else"]   ="ELSE token";
+    token["repeat"] ="REPEAT token";
+    token["read"]   ="READ token";
     //token["+"]      ="plus";
     //token["-"]      ="minus";
     //token["*"]      ="multiple";
     //token["/"]      ="divide";
     //token[";"]      ="SEMI";
-    token[":="]     ="ASSIGN";
+    //token[":="]     ="ASSIGN";
 
     enum state{start,inComment,inID,inNum,inAssign,done};
     state s=start;
@@ -99,6 +99,16 @@ void MainWindow::on_pushButton_clicked()
                     answer.push_back({";","SemiColon"});
                      //outputToken[";"]="SEMI";
                  }
+                 else if ( text[i]== '.'){
+                    answer.push_back({".","DOT"}
+                 }
+                 else if ( text[i]== '<'){
+                    answer.push_back({"<","SmallerThan"}
+                 }
+                 else if ( text[i]=='>')
+                 {
+                     answer.push_back({">","GreaterThan"});
+                 }
                  break;
 
 
@@ -115,7 +125,7 @@ void MainWindow::on_pushButton_clicked()
                     s=start;
                     break;
            case inNum:
-                    while (text[i].isDigit() || text[i]== '.')
+                    while (text[i].isDigit())
                     {
                         myCharContainer=myCharContainer+text[i];
                         i++;
