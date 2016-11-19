@@ -45,8 +45,11 @@ void MainWindow::on_pushButton_clicked()
     state s=start;
 
     QString myCharContainer="";
-    QVector <QString>container;
-    QMap <QString,QString>outputToken;
+    //QVector <QString>container;
+    //QMap <QString,QString>outputToken;
+
+    QVector <pair <QString,QString> > answer;
+    QString type;
     for (int i = 0 ;i < (text.size()+1);i++){
         QChar ch = text[i];
         label:  switch (s) {   // the label to not waste the current char
@@ -77,26 +80,32 @@ void MainWindow::on_pushButton_clicked()
                     s=inNum;
                  }
                  else if (text[i]=='+') {
-                    outputToken["+"]="PLUS";
+                     answer.push_back({"+","Plus"});
+                     //outputToken["+"]="PLUS";
                  }
                  else if (text[i]=='-') {
-                    outputToken["-"]="MINUS";
+                     answer.push_back({"-","Minus"});
+                     //outputToken["-"]="MINUS";
                  }
                  else if (text[i]=='/') {
-                    outputToken["/"]="DIVIDE";
+                    answer.push_back({"/","Divide"});
+                    // outputToken["/"]="DIVIDE";
                  }
                  else if (text[i]=='*') {
-                    outputToken["*"]="MULTIPLE";
+                    answer.push_back({"*","Multiple Operator"});
+                     //outputToken["*"]="MULTIPLE";
                  }
                  else if (text[i]==';') {
-                    outputToken[";"]="SEMI";
+                    answer.push_back({";","SemiColon"});
+                     //outputToken[";"]="SEMI";
                  }
                  break;
 
 
            case inAssign:
                    if (text[i]=='=')
-                   { myCharContainer= myCharContainer+(text[i]);}
+                   {    myCharContainer= myCharContainer+(text[i]);}
+                    type="Assignment operator";
                     s=done;
                     goto label;      // or u can use (i--) instead of (goto)
                    break;
@@ -112,8 +121,10 @@ void MainWindow::on_pushButton_clicked()
                         i++;
                     }
                     i--;
-                    outputToken[myCharContainer]="Number";
-                    s=start;
+                    //outputToken[myCharContainer]="Number";
+                    type="Number";
+                    s=done;
+                    //s=start;
                     //goto label;
                      break;
            case inID:
@@ -123,18 +134,24 @@ void MainWindow::on_pushButton_clicked()
                          i++;
                      }
                      i--;
+                     if (token.find(myCharContainer)!=token.end())
+                     {
+                         type=token[myCharContainer];
+                     }
+                     else type="identefier";
                      s=done;
                     goto label;
             break;
 
           case done:
-                 container.push_back(myCharContainer);
+                 //container.push_back(myCharContainer);
+                 answer.push_back({myCharContainer,type});
                  s=start;
            break;
           }
       }
 
-        // to get the Reserved word and the Identefier
+     /*   // to get the Reserved word and the Identefier
       for(QVector<QString>::iterator vec = container.begin(); vec != container.end(); vec++) {
           for (QMap<QString,QString>::iterator mp=token.begin();mp!=token.end(); mp++) {
               if (vec ==mp.key() )
@@ -144,7 +161,7 @@ void MainWindow::on_pushButton_clicked()
               }
               else outputToken[*vec]="IDENTEFIER";
            }
-      }
+      }*/
 
 }
 
@@ -155,17 +172,6 @@ void MainWindow::on_textEdit_destroyed()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-
-    std::locale loc;
-      QString str="17k76ad2";
-      for (int i = 0; i < str.size(); ++i)
-      {
-        /* code */
-        if (str[i].isDigit())
-        {
-             ui->textBrowser->setText("tmam");
-        }
-        else ui->textBrowser->setText("msh tmam");
-      }
-
+    QString text = ui->textEdit->toPlainText();
+    ui->textBrowser->setText(text);
 }
