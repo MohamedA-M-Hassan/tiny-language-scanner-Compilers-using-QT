@@ -184,5 +184,18 @@ void MainWindow::on_textEdit_destroyed()
 
 void MainWindow::on_pushButton_3_clicked()
 {
-    ui->textBrowser->setText("goo");
+   close();
+}
+
+
+
+void MainWindow::on_pushButton_2_clicked()
+{
+
+}
+
+void MainWindow::on_pushButton_4_clicked()
+{
+    ui->textEdit->clear();
+    ui->textBrowser->clear();
 }
