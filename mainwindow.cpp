@@ -100,10 +100,10 @@ void MainWindow::on_pushButton_clicked()
                      //outputToken[";"]="SEMI";
                  }
                  else if ( text[i]== '.'){
-                    answer.push_back({".","DOT"}
+                    answer.push_back({".","DOT"});
                  }
                  else if ( text[i]== '<'){
-                    answer.push_back({"<","SmallerThan"}
+                    answer.push_back({"<","SmallerThan"});
                  }
                  else if ( text[i]=='>')
                  {
@@ -172,7 +172,9 @@ void MainWindow::on_pushButton_clicked()
               else outputToken[*vec]="IDENTEFIER";
            }
       }*/
-
+    for (QVector< pair <QString,QString> >::iterator it=answer.begin(); it != answer.end(); it++) {
+        ui->textBrowser->append(it->first + "   ||  " + it->second);
+    }
 }
 
 void MainWindow::on_textEdit_destroyed()
@@ -180,8 +182,7 @@ void MainWindow::on_textEdit_destroyed()
  //   trial = "hi";
 }
 
-void MainWindow::on_pushButton_2_clicked()
+void MainWindow::on_pushButton_3_clicked()
 {
-    QString text = ui->textEdit->toPlainText();
-    ui->textBrowser->setText(text);
+    ui->textBrowser->setText("goo");
 }
