@@ -1,11 +1,17 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "scanner.h"
+
+// to insert from file
+#include <QFileDialog>
+#include <QFile>
+#include <QTextStream>
+#include <QMessageBox>
+
 #include <QString>
 #include <QMap>
 // copy paste to check if num or n
-#include <locale>         // std::locale, std::isdigit
-#include <sstream>        // std::QStringstream
+
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -198,4 +204,17 @@ void MainWindow::on_pushButton_4_clicked()
 {
     ui->textEdit->clear();
     ui->textBrowser->clear();
+}
+
+void MainWindow::on_pushButton_5_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+        tr("Open File"), "/home", tr("code file (*.txt)"));
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly))
+        QMessageBox::information(0,"info",file.errorString());
+    QTextStream in(&file);
+
+    ui->textEdit->setText(in.readAll());
+
 }
