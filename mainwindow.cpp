@@ -3,10 +3,10 @@
 #include "scanner.h"
 
 // to insert from file
-#include <QFileDialog>
-#include <QFile>
-#include <QTextStream>
-#include <QMessageBox>
+    #include <QFileDialog>
+    #include <QFile>
+    #include <QTextStream>
+    #include <QMessageBox>
 
 #include <QString>
 #include <QMap>
@@ -120,10 +120,18 @@ void MainWindow::on_pushButton_clicked()
 
            case inAssign:
                    if (text[i]=='=')
-                   {    myCharContainer= myCharContainer+(text[i]);}
-                    type="Assignment operator";
-                    s=done;
-                    goto label;      // or u can use (i--) instead of (goto)
+                   {
+                       myCharContainer= myCharContainer+(text[i]);
+                        type="Assignment operator";
+
+                   }
+                   else{
+                        i--;
+                        type="Colon";
+                   }
+                   s=done;
+                   goto label;
+                          // or u can use (i--) instead of (goto)
                    break;
            case inComment:
                     while (text[i] !='}')
@@ -141,7 +149,7 @@ void MainWindow::on_pushButton_clicked()
                     type="Number";
                     s=done;
                     //s=start;
-                    //goto label;
+                    goto label;
                      break;
            case inID:
                      while (text[i].isLetter()||text[i].isDigit())
@@ -178,8 +186,20 @@ void MainWindow::on_pushButton_clicked()
               else outputToken[*vec]="IDENTEFIER";
            }
       }*/
+    /* //to print in textBrowser not so good
+    ui->textBrowser->setText("Symbol       ||    TokenType");// added so when you repeat the use of the button just restart w mtkmlsh 3la el2dyym
+
     for (QVector< pair <QString,QString> >::iterator it=answer.begin(); it != answer.end(); it++) {
-        ui->textBrowser->append(it->first + "   ||  " + it->second);
+        ui->textBrowser->append(it->first + "       ||    " + it->second);
+    }*/
+    // to print in a table
+    ui->tableWidget->show();
+    for (QVector< pair <QString,QString> >::iterator it=answer.begin(); it != answer.end(); it++){
+        ui->tableWidget->setRowCount(ui->tableWidget->rowCount()+1);
+        QTableWidgetItem *newItem1 = new QTableWidgetItem(it->first);
+        ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 0, newItem1);
+        QTableWidgetItem *newItem2 = new QTableWidgetItem(it->second);
+        ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 1, newItem2);
     }
 }
 
@@ -197,19 +217,29 @@ void MainWindow::on_pushButton_3_clicked()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-
+    //ui->tableWidget->setRowCount(0);
+    //ui->tableWidget->setColumnCount(0);
+    //token type
+    ui->tableWidget->setRowCount(ui->tableWidget->rowCount()+1);
+    QTableWidgetItem *newItem1 = new QTableWidgetItem("hello");
+    ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 0, newItem1);
+    QTableWidgetItem *newItem2 = new QTableWidgetItem("boogy");
+    ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 1, newItem2);
 }
 
 void MainWindow::on_pushButton_4_clicked()
 {
     ui->textEdit->clear();
     ui->textBrowser->clear();
+    ui->tableWidget->clear();
+    ui->tableWidget->setRowCount(0);
+    ui->tableWidget->hide();
 }
 
 void MainWindow::on_pushButton_5_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
-        tr("Open File"), "/home", tr("code file (*.txt)"));
+        tr("Open File"), "/home", tr("code file (*.txt)"));// string has the file link
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly))
         QMessageBox::information(0,"info",file.errorString());
