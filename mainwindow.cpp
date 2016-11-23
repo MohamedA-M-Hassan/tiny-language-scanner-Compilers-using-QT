@@ -19,6 +19,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    // hide
+    ui->tableWidget->hide();
+    ui->label_2->hide();
+    ui->pushButton_2->hide();
+    ui->textBrowser->hide();
 }
 
 MainWindow::~MainWindow()
@@ -194,6 +199,7 @@ void MainWindow::on_pushButton_clicked()
     }*/
     // to print in a table
     ui->tableWidget->show();
+    ui->label_2->show();
     for (QVector< pair <QString,QString> >::iterator it=answer.begin(); it != answer.end(); it++){
         ui->tableWidget->setRowCount(ui->tableWidget->rowCount()+1);
         QTableWidgetItem *newItem1 = new QTableWidgetItem(it->first);
@@ -234,6 +240,7 @@ void MainWindow::on_pushButton_4_clicked()
     ui->tableWidget->clear();
     ui->tableWidget->setRowCount(0);
     ui->tableWidget->hide();
+    ui->label_2->hide();
 }
 
 void MainWindow::on_pushButton_5_clicked()
