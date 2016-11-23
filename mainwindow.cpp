@@ -199,6 +199,11 @@ void MainWindow::on_pushButton_clicked()
     }*/
     // to print in a table
     ui->tableWidget->show();
+    // ------------
+    // to not repeat the data
+    ui->tableWidget->clear();
+    ui->tableWidget->setRowCount(0);
+    //--------------------------
     ui->label_2->show();
     for (QVector< pair <QString,QString> >::iterator it=answer.begin(); it != answer.end(); it++){
         ui->tableWidget->setRowCount(ui->tableWidget->rowCount()+1);
@@ -220,7 +225,7 @@ void MainWindow::on_pushButton_3_clicked()
 }
 
 
-
+// trial Button
 void MainWindow::on_pushButton_2_clicked()
 {
     //ui->tableWidget->setRowCount(0);
@@ -229,10 +234,10 @@ void MainWindow::on_pushButton_2_clicked()
     ui->tableWidget->setRowCount(ui->tableWidget->rowCount()+1);
     QTableWidgetItem *newItem1 = new QTableWidgetItem("hello");
     ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 0, newItem1);
-    QTableWidgetItem *newItem2 = new QTableWidgetItem("boogy");
+    QTableWidgetItem *newItem2 = new QTableWidgetItem("Boogy");
     ui->tableWidget->setItem(ui->tableWidget->rowCount()-1, 1, newItem2);
 }
-
+// clear button
 void MainWindow::on_pushButton_4_clicked()
 {
     ui->textEdit->clear();
