@@ -24,6 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->label_2->hide();
     ui->pushButton_2->hide();
     ui->textBrowser->hide();
+    ui->tableWidget->hide();
+   // ui->pushButton_6->hide();
 }
 
 MainWindow::~MainWindow()
@@ -205,6 +207,7 @@ void MainWindow::on_pushButton_clicked()
     ui->tableWidget->setRowCount(0);
     //--------------------------
     ui->label_2->show();
+
     for (QVector< pair <QString,QString> >::iterator it=answer.begin(); it != answer.end(); it++){
         ui->tableWidget->setRowCount(ui->tableWidget->rowCount()+1);
         QTableWidgetItem *newItem1 = new QTableWidgetItem(it->first);
@@ -248,10 +251,14 @@ void MainWindow::on_pushButton_4_clicked()
     ui->label_2->hide();
 }
 
+// insert button
 void MainWindow::on_pushButton_5_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
         tr("Open File"), "/home", tr("code file (*.txt)"));// string has the file link
+
+
+
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly))
         QMessageBox::information(0,"info",file.errorString());
@@ -260,3 +267,4 @@ void MainWindow::on_pushButton_5_clicked()
     ui->textEdit->setText(in.readAll());
 
 }
+
